@@ -17,5 +17,7 @@ public interface CustomerService {
 	
 	public void deleteCustomerById(Long customerid);
 	
+	public String getMessageFromBank();
+	
 
 }

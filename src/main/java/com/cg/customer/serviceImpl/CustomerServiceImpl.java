@@ -2,6 +2,7 @@ package com.cg.customer.serviceImpl;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 	private final AccountFeignClient accountFeign;
 	
-//	@Autowired
-//	RestTemplate restTemplate;
+	@Autowired
+	RestTemplate restTemplate;
 	
 	Customers customer;
 	
@@ -91,6 +92,8 @@ public class CustomerServiceImpl implements CustomerService {
 		 return customerRepository.save(customer);
 		
 	}
+	
+	
 
 	
 //	@Cacheable(key = "#customerid",value="Customer")
@@ -145,6 +148,14 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		logger.info("---CusomerMicro---Service updateId method called-------");
 		return customerRepository.save(customer);
+	}
+	
+	
+	public String getMessageFromBank() {
+		String url="http://BANKACCOUNT/v1/account/";
+		return restTemplate.getForObject(url, String.class);
+	
+		 
 	}
 
 }
