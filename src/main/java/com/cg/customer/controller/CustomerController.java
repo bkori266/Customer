@@ -79,4 +79,9 @@ public class CustomerController {
 		return ResponseEntity.ok("Customer deleted Successfully with id"+customerId);
 	}
 	
+	@GetMapping("/bankMessage")
+	public ResponseEntity<String> getMessageFromBank() {
+		return ResponseEntity.ok().body(customerService.getMessageFromBank());
+	}
+	
 }

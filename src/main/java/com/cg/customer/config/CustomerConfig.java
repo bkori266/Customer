@@ -1,6 +1,7 @@
 package com.cg.customer.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -24,10 +25,7 @@ public class CustomerConfig {
 	private CustomerJWTFilter customerJWTFilter;
 	
 	
-//	@Bean
-//	public RestTemplate restTemplate(){
-//		return new RestTemplate();
-//	} 
+//	 
 //	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -40,6 +38,12 @@ public class CustomerConfig {
 		httpSecurity.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		httpSecurity.addFilterBefore(customerJWTFilter, UsernamePasswordAuthenticationFilter.class);
 		return httpSecurity.build();
+	}
+	
+	@Bean
+	@LoadBalanced
+	public RestTemplate restTemplate(){
+		return new RestTemplate();
 	}
 	
 	@PostConstruct
