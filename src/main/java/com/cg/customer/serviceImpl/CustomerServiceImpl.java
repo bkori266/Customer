@@ -1,10 +1,13 @@
 package com.cg.customer.serviceImpl;
 
+import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import com.cg.bank.domain.BankAccount;
 import com.cg.customer.domain.Customers;
 import com.cg.customer.domain.CustomersDTO;
@@ -13,12 +16,17 @@ import com.cg.customer.feign.AccountFeignClient;
 import com.cg.customer.repository.CustomerRepository;
 import com.cg.customer.service.CustomerService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
 	private static final Logger logger=LoggerFactory.getLogger(CustomerServiceImpl.class);	
 
-	private final AccountFeignClient accountFeign;	
+	private final AccountFeignClient accountFeign;
+	
+//	@Autowired
+//	RestTemplate restTemplate;
 	
 	Customers customer;
 	
@@ -40,8 +48,8 @@ public class CustomerServiceImpl implements CustomerService {
 //	        return Collections.emptyList();
 //	    }
 	
-/*	@CircuitBreaker(name = "accountService",fallbackMethod = "accountFallback")
-    public CustomersDTO getCustomer(Long customerId) {
+	@CircuitBreaker(name = "bank",fallbackMethod = "accountFallback")
+    public CustomersDTO getCustomerById(Long customerId) {
 
         Customers customer = customerRepository.findById(customerId)
                 .orElseThrow(() ->
@@ -72,11 +80,11 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.getMobileNumber(),
                 customer.getAadharNumber(),
                 Collections.emptyList(),
-                "Account Service is down"
+                "BankAccount Service is down"
                
         );
     }
-*/	
+	
 	@Override
 	public Customers save(Customers customer) {		
 		logger.info("----CusomerMicro--Service save method called-------");
@@ -84,13 +92,14 @@ public class CustomerServiceImpl implements CustomerService {
 		
 	}
 
-	@Override
+	
 //	@Cacheable(key = "#customerid",value="Customer")
-	public CustomersDTO getCustomerById(Long customerid) {
+	public CustomersDTO getCustomerById2(Long customerid) {
 		CustomersDTO customerDTO=new CustomersDTO();
-		List<BankAccount> account=accountFeign.getBankByCustomerId(customerid);
+		/*		List<BankAccount> account=accountFeign.getBankByCustomerId(customerid);
 		customer=customerRepository.findById(customerid).orElseThrow(()->new CustomerNotFoundException("Customer not found with this id:"+customerid));
 		
+		//List<BankAccount> restTemplate=restTemplate.get
 		customerDTO.setCustomerid(customer.getCustomerid());
 		customerDTO.setName(customer.getName());
 		customerDTO.setMobileNumber(customer.getMobileNumber());
@@ -103,8 +112,9 @@ public class CustomerServiceImpl implements CustomerService {
 		else 
 		{	logger.info("--CusomerMicro--Service getById  called with bank found----------");
 			customerDTO.setAccounts(account);}
-		
+*/		
 		return customerDTO;
+		
 	}
 
 	@Override
