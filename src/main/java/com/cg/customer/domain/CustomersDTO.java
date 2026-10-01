@@ -6,7 +6,7 @@ import com.cg.bank.domain.BankAccount;
 
 import lombok.Builder;
 
-@Builder
+
 public class CustomersDTO {
 
 	private Long customerid;
@@ -15,6 +15,23 @@ public class CustomersDTO {
 	private String aadharNumber;
 	private List<BankAccount> accounts;
 	private String message;	
+	
+	
+
+	public CustomersDTO() {
+		super();
+	}
+
+	public CustomersDTO(Long customerid, String name, String mobileNumber, String aadharNumber,
+			List<BankAccount> accounts, String message) {
+		super();
+		this.customerid = customerid;
+		this.name = name;
+		this.mobileNumber = mobileNumber;
+		this.aadharNumber = aadharNumber;
+		this.accounts = accounts;
+		this.message = message;
+	}
 
 	public String getMessage() {
 		return message;
