@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 
 import jakarta.annotation.PostConstruct;
 
@@ -22,6 +23,12 @@ public class CustomerConfig {
 	@Autowired
 	private CustomerJWTFilter customerJWTFilter;
 	
+	
+//	@Bean
+//	public RestTemplate restTemplate(){
+//		return new RestTemplate();
+//	} 
+//	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf(custom->custom.disable());
